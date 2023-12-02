@@ -2,7 +2,7 @@ package com.lamacorp;
 
 import java.util.Arrays;
 
-public class Day1 {
+public class Day01 {
 
     public void run() {
         System.out.println("----- DAY 1 -----");
