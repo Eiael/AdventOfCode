@@ -2,24 +2,24 @@ package com.lamacorp;
 
 import java.util.Arrays;
 
-public class Day01 {
+public class Day01 extends Day {
 
-    public void run() {
-        System.out.println("----- DAY 1 -----");
-        part1();
-        part2();
-    }
 
-    private void part1() {
+    protected void part1() {
         String[] lines = input.split("\n");
         int code = Arrays.stream(lines).map(this::toCalibrationCode).reduce(Integer::sum).orElse(0);
         System.out.println("Part 1 : " + code);
     }
 
-    private void part2() {
+    protected void part2() {
         String[] lines = input.split("\n");
         int code = Arrays.stream(lines).map(this::toCalibrationCodeWithLetter).reduce(Integer::sum).orElse(0);
-        System.out.println("Part 1 : " + code);
+        System.out.println("Part 2 : " + code);
+    }
+
+    @Override
+    protected String getNumber() {
+        return "01";
     }
 
     private int toCalibrationCodeWithLetter(String s) {

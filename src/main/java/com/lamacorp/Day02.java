@@ -1,17 +1,82 @@
 package com.lamacorp;
 
-public class Day02 {
+import java.util.Arrays;
 
-    public void run() {
-        System.out.println("----- DAY 2 -----");
-        part1();
-        part2();
+public class Day02 extends Day {
+
+    private static final int MAX_CUBE_BLUE = 14;
+    private static final int MAX_CUBE_GREEN = 13;
+    private static final int MAX_CUBE_RED = 12;
+
+    @Override
+    protected void part1() {
+        String[] lines = input.split("\n");
+        int result = Arrays.stream(lines)
+                .map(this::parseGameData)
+                .filter(this::isBagValid)
+                .map(gameData -> gameData.id)
+                .reduce(Integer::sum)
+                .orElse(0);
+        System.out.println("Part 1 : " + result);
     }
 
-    private void part1() {
+    @Override
+    protected void part2() {
+        String[] lines = input.split("\n");
+        int result = Arrays.stream(lines)
+                .map(this::parseGameData)
+                .map(gameData -> gameData.blue * gameData.red * gameData.green)
+                .reduce(Integer::sum)
+                .orElse(0);
+        System.out.println("Part 2 : " + result);
     }
 
-    private void part2() {
+    private GameData parseGameData(String s) {
+        GameData gameData = new GameData();
+        String[] gameTitleAndPicks = s.split(":");
+        String[] picks = gameTitleAndPicks[1].split("[,;]");
+        setGameId(gameData, gameTitleAndPicks[0]);
+        setGameMaxColor(gameData, picks);
+        return gameData;
+    }
+
+    private void setGameId(GameData gameData, String gameTitle) {
+        gameData.id = Integer.parseInt(gameTitle.replaceAll("Game ", ""));
+    }
+
+    private void setGameMaxColor(GameData gameData, String[] picks) {
+        for (String p : picks) {
+            if (p.contains("blue")) {
+                int cubeNb = Integer.parseInt(p.replaceAll("blue", "").trim());
+                gameData.blue = Math.max(gameData.blue, cubeNb);
+            }
+            if (p.contains("green")) {
+                int cubeNb = Integer.parseInt(p.replaceAll("green", "").trim());
+                gameData.green = Math.max(gameData.green, cubeNb);
+            }
+            if (p.contains("red")) {
+                int cubeNb = Integer.parseInt(p.replaceAll("red", "").trim());
+                gameData.red = Math.max(gameData.red, cubeNb);
+            }
+        }
+    }
+
+    private boolean isBagValid(GameData game) {
+        return game.blue <= MAX_CUBE_BLUE &&
+                game.green <= MAX_CUBE_GREEN &&
+                game.red <= MAX_CUBE_RED;
+    }
+
+    private static class GameData {
+        public int id;
+        public int green;
+        public int red;
+        public int blue;
+    }
+
+    @Override
+    protected String getNumber() {
+        return "02";
     }
 
     private final String input = """
