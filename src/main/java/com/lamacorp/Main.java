@@ -5,5 +5,6 @@ public class Main {
         new Day01().run();
         new Day02().run();
         new Day03().run();
+        new Day04().run();
     }
 }
